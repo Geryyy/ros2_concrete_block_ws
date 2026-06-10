@@ -1,0 +1,14 @@
+<CycloneDDS>
+  <Domain>
+    <General>
+      <Interfaces>
+        <NetworkInterface autodetermine="true" priority="default" multicast="default"/>
+      </Interfaces>
+    </General>
+    <Discovery>
+      <Peers>
+        <Peer address="192.168.1.10"/>
+      </Peers>
+    </Discovery>
+  </Domain>
+</CycloneDDS>

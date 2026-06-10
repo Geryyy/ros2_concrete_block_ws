@@ -34,6 +34,7 @@ RUN set -exo pipefail && \
     python3-pandas \
     ccache \
     clang \
+    lld \
     gdb \
     gdbserver \
     libclang-14-dev \
@@ -55,7 +56,10 @@ RUN set -exo pipefail && \
     ros-humble-nav2-behavior-tree \
     ros-humble-nav2-lifecycle-manager \
     ros-humble-octomap-server \
-    ros-humble-foxglove-bridge && \
+    ros-humble-vision-msgs \
+    ros-humble-foxglove-bridge \
+    ros-humble-cloudini-ros \
+    ros-humble-rmw-cyclonedds-cpp && \
   rosdep init || true && \
   rosdep update --rosdistro="${ROS_DISTRO}" && \
   apt-get clean -y && \
@@ -101,6 +105,21 @@ RUN set -exo pipefail && \
   pip3 install --no-cache-dir \
     python-fcl \
     trimesh
+
+# Install PyTorch (CUDA 12.8 wheels, Blackwell/sm_120 support) and SAM 2.1.
+# The RTX 50-series (Blackwell) needs cu128 + torch>=2.7; torch 2.5.x has no
+# sm_120 kernels and fails at runtime. SAM2_BUILD_CUDA=0 skips SAM 2's optional
+# custom CUDA kernel (only used for some video post-processing) so we do not need
+# the full CUDA toolkit/nvcc in the image.
+ENV SAM2_CHECKPOINT_DIR=/opt/sam2/checkpoints
+RUN set -exo pipefail && \
+  pip3 install --no-cache-dir --index-url https://download.pytorch.org/whl/cu128 \
+    torch torchvision && \
+  SAM2_BUILD_CUDA=0 pip3 install --no-cache-dir \
+    "git+https://github.com/facebookresearch/sam2.git" && \
+  mkdir -p "${SAM2_CHECKPOINT_DIR}" && \
+  wget -q -O "${SAM2_CHECKPOINT_DIR}/sam2.1_hiera_base_plus.pt" \
+    https://dl.fbaipublicfiles.com/segment_anything_2/092824/sam2.1_hiera_base_plus.pt
 
 # Install Open3D v0.18.0 from source
 RUN set -exo pipefail && \

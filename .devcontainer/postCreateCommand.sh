@@ -1,8 +1,12 @@
 #!/bin/bash
 set -v # verbose, but don't expand vars
 echo 'export PATH="/usr/lib/ccache:$PATH"' | tee -a "/home/${USERNAME}/.bashrc"
+echo 'export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp' >> "/home/${USERNAME}/.bashrc"
+echo 'export CYCLONEDDS_URI=file:///workspaces/ros2_concrete_block_ws/.devcontainer/cyclonedds.xml' >> "/home/${USERNAME}/.bashrc"
+echo 'export ROS_DOMAIN_ID=42' >> "/home/${USERNAME}/.bashrc"
 echo 'export CCACHE_DIR=/workspaces/ros2_concrete_block_ws/.cache/ccache' >> "/home/${USERNAME}/.bashrc"
 echo "source /usr/share/gazebo/setup.sh" >>"/home/${USERNAME}/.bashrc"
+echo "source /opt/ros/humble/setup.bash" >>"/home/${USERNAME}/.bashrc"
 echo "source /workspaces/ros2_concrete_block_ws/install/setup.bash" >>"/home/${USERNAME}/.bashrc"
 echo "alias openlog='code log/latest_test/*/stdout_stderr.log'" >> /home/${USERNAME}/.bashrc
 sudo npm install -g git-removed-branches
@@ -33,6 +37,16 @@ sudo apt-get update
 sudo apt-get install -y --no-install-recommends \
   ros-humble-nav2-behavior-tree \
   ros-humble-nav2-lifecycle-manager
+# check out all repos listed in the meta-package's .repos file
+vcs import src < src/concrete_block_stack/concrete_block_stack.repos
+# initialise git submodules in every checked-out package; fall back to --remote
+# if the pinned commit no longer exists on the remote (e.g. after a force-push)
+for dir in src/*/; do
+  if [ -f "$dir/.gitmodules" ]; then
+    git -C "$dir" submodule update --init --recursive 2>/dev/null || \
+      git -C "$dir" submodule update --init --recursive --remote
+  fi
+done
 # update dependencies
 rosdep install -riys --from-paths src
 # install pre-commit hooks in each package
