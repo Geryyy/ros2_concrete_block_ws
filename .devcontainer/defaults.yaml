@@ -1,0 +1,7 @@
+{
+  "build":
+    {
+      "symlink-install": true,
+      "mixin": ["ccache", "compile-commands", "lld", "rel-with-deb-info"],
+    },
+}

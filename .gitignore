@@ -1,0 +1,26 @@
+# ROS 2 / colcon build artifacts
+/build/
+/install/
+/log/
+
+# ccache (CCACHE_DIR points here, see .devcontainer/postCreateCommand.sh)
+/.cache/
+
+# Workspace source packages are cloned via vcs from a .repos file — not committed.
+# concrete_block_stack is its own git repo; the rest are imported from its .repos.
+/src/
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Personal Claude Code overrides
+.claude/settings.local.json
+
+# OS / editor noise
+.DS_Store

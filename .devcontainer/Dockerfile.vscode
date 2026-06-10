@@ -1,0 +1,161 @@
+# ARG from=gitlab-intern.ait.ac.at:5010/vac-cds/projects/2019_lp_autonome_baustelle_grp/ros2_hmi_ws:main
+ARG from=osrf/ros:humble-desktop-full
+FROM ${from}
+
+ARG CMAKE_INSTALL_PREFIX=/usr/local
+ARG NUM_THREADS=8
+
+ENV DEBIAN_FRONTEND=noninteractive
+ENV ROS_DISTRO=humble
+ENV ACADOS_SOURCE_DIR=/opt/acados
+ENV LD_LIBRARY_PATH=/opt/acados/lib
+ENV USERNAME=vscode
+ENV DOCKER_IMAGE_NAME=ros2_concrete_block_ws
+
+SHELL ["/bin/bash", "-c"]
+
+# Base dependencies
+RUN set -exo pipefail && \
+  apt-get update -y -qq && \
+  apt-get install -y --no-install-recommends \
+    build-essential \
+    cmake \
+    git \
+    wget \
+    curl \
+    ca-certificates \
+    python3-pip \
+    python3-dev \
+    python3-setuptools \
+    python3-wheel \
+    python3-colcon-common-extensions \
+    python3-vcstool \
+    python3-rosdep \
+    python3-pandas \
+    ccache \
+    clang \
+    gdb \
+    gdbserver \
+    libclang-14-dev \
+    llvm-dev \
+    llvm \
+    swig \
+    libtool \
+    libgoogle-glog-dev \
+    libgflags-dev \
+    libeigen3-dev \
+    coinor-libipopt-dev \
+    qttools5-dev-tools \
+    python3-pyqt5 \
+    ros-humble-angles \
+    ros-humble-gazebo-ros-pkgs \
+    ros-humble-moveit-core \
+    ros-humble-rviz-imu-plugin \
+    ros-humble-tf-transformations \
+    ros-humble-nav2-behavior-tree \
+    ros-humble-nav2-lifecycle-manager \
+    ros-humble-octomap-server \
+    ros-humble-foxglove-bridge && \
+  rosdep init || true && \
+  rosdep update --rosdistro="${ROS_DISTRO}" && \
+  apt-get clean -y && \
+  rm -rf /var/lib/apt/lists/*
+
+WORKDIR /opt
+
+# Install CMA-ES solver
+RUN set -exo pipefail && \
+  git clone --depth 1 https://github.com/CMA-ES/libcmaes.git /opt/libcmaes && \
+  mkdir -p /opt/libcmaes/build && \
+  cd /opt/libcmaes/build && \
+  cmake .. \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX="${CMAKE_INSTALL_PREFIX}" \
+    -DLIBCMAES_BUILD_TESTS=OFF && \
+  make -j"${NUM_THREADS}" && \
+  make install && \
+  ldconfig && \
+  rm -rf /opt/libcmaes
+
+# Install CasADi
+# Pin this if master breaks, e.g. --branch 3.6.7
+RUN set -exo pipefail && \
+  git clone https://github.com/casadi/casadi.git /opt/casadi_src && \
+  mkdir -p /opt/casadi_src/build && \
+  cd /opt/casadi_src/build && \
+  cmake .. \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX="${CMAKE_INSTALL_PREFIX}" \
+    -DWITH_PYTHON=ON \
+    -DPYTHON_EXECUTABLE="$(which python3)" \
+    -DWITH_IPOPT=ON \
+    -DWITH_CLANG=ON \
+    -DCLANG_LLVM_LIB_DIR="$(llvm-config --libdir)" && \
+  make -j"${NUM_THREADS}" && \
+  make install && \
+  ldconfig && \
+  rm -rf /opt/casadi_src
+
+# Python geometry/runtime dependencies used by the concrete block stack
+RUN set -exo pipefail && \
+  pip3 install --no-cache-dir \
+    python-fcl \
+    trimesh
+
+# Install Open3D v0.18.0 from source
+RUN set -exo pipefail && \
+  git clone --depth 1 --branch v0.18.0 https://github.com/isl-org/Open3D.git /opt/open3d_src && \
+  cd /opt/open3d_src && \
+  util/install_deps_ubuntu.sh assume-yes && \
+  mkdir -p build && \
+  cd build && \
+  cmake .. \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX="${CMAKE_INSTALL_PREFIX}" \
+    -DBUILD_PYTHON_MODULE=ON \
+    -DPYTHON_EXECUTABLE="$(which python3)" \
+    -DBUILD_EXAMPLES=OFF \
+    -DBUILD_UNIT_TESTS=OFF && \
+  make -j"${NUM_THREADS}" && \
+  make install && \
+  make install-pip-package && \
+  ldconfig && \
+  rm -rf /opt/open3d_src
+
+# Install eigenpy from source with CasADi support
+RUN set -exo pipefail && \
+  git clone --branch v3.12.0 --depth 1 https://github.com/stack-of-tasks/eigenpy.git /opt/eigenpy_src && \
+  mkdir -p /opt/eigenpy_src/build && \
+  cd /opt/eigenpy_src/build && \
+  cmake .. \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX="${CMAKE_INSTALL_PREFIX}" \
+    -DPYTHON_EXECUTABLE="$(which python3)" \
+    -DBUILD_WITH_CASADI_SUPPORT=ON && \
+  make -j"${NUM_THREADS}" && \
+  make install && \
+  ldconfig && \
+  rm -rf /opt/eigenpy_src
+
+# Install acados from source
+RUN set -exo pipefail && \
+  git clone --recurse-submodules https://github.com/Geryyy/acados.git /opt/acados && \
+  cd /opt/acados && \
+  mkdir -p build && \
+  cd build && \
+  cmake .. \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX="${CMAKE_INSTALL_PREFIX}" \
+    -DACADOS_WITH_QPOASES=ON \
+    -DACADOS_WITH_OSQP=ON && \
+  make -j"${NUM_THREADS}" && \
+  make install && \
+  ldconfig && \
+  cd /opt/acados && \
+  bash .github/linux/install_tera.sh && \
+  pip3 install --no-cache-dir \
+    /opt/acados/interfaces/acados_template \
+    pytest
+
+# Switch back to dialog for any ad-hoc apt use
+ENV DEBIAN_FRONTEND=dialog
