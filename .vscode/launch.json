@@ -1,0 +1,62 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Bag Visualization",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "source /opt/ros/${ROS_DISTRO}/setup.bash && source install/setup.bash && exec ros2 launch concrete_block_perception bag_visualization.launch.py",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "Perception Pipeline",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "source /opt/ros/${ROS_DISTRO}/setup.bash && source install/setup.bash && exec ros2 launch concrete_block_perception perception.launch.py use_sim_time:=true use_gpu:=false",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "Perception Pipeline + SAM2 Inputs",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "source /opt/ros/${ROS_DISTRO}/setup.bash && source install/setup.bash && exec ros2 launch concrete_block_perception perception_sam2_inputs.launch.py use_sim_time:=true use_gpu:=true",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "SAM2 Segmentation",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "source /opt/ros/${ROS_DISTRO}/setup.bash && source install/setup.bash && exec ros2 launch concrete_block_perception sam2_segmentation_for_perception.launch.py use_sim_time:=true sam2_device:=cuda log_every_n_frames:=1",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "SAM2 Video Segmentation",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "source /opt/ros/${ROS_DISTRO}/setup.bash && source install/setup.bash && exec ros2 launch concrete_block_perception sam2_video_segmentation_for_perception.launch.py use_sim_time:=true sam2_device:=cuda clip_length:=4 clip_stride:=1 offload_video_to_cpu:=false",
+      "cwd": "${workspaceFolder}"
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Bag Visualization + Perception",
+      "configurations": ["Bag Visualization", "Perception Pipeline"]
+    },
+    {
+      "name": "Bag Visualization + Perception + SAM2",
+      "configurations": [
+        "Bag Visualization",
+        "Perception Pipeline + SAM2 Inputs",
+        "SAM2 Segmentation"
+      ]
+    },
+    {
+      "name": "Bag Visualization + Perception + SAM2 Video",
+      "configurations": [
+        "Bag Visualization",
+        "Perception Pipeline + SAM2 Inputs",
+        "SAM2 Video Segmentation"
+      ]
+    }
+  ]
+}
