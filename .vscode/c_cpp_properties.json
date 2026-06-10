@@ -1,0 +1,29 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "${default}",
+        "limitSymbolsToIncludedHeaders": false
+      },
+      "includePath": [
+        "/workspaces/ros2_concrete_block_ws/install/ros2_yolos_cpp/include/**",
+        "/workspaces/ros2_concrete_block_ws/install/concrete_block_rviz_plugins/include/**",
+        "/workspaces/ros2_concrete_block_ws/install/concrete_block_motion_planning/include/**",
+        "/workspaces/ros2_concrete_block_ws/install/concrete_block_world_model_interfaces/include/**",
+        "/workspaces/ros2_concrete_block_ws/install/concrete_block_perception_interfaces/include/**",
+        "/opt/ros/humble/include/**",
+        "/workspaces/ros2_concrete_block_ws/src/concrete_block_perception/include/**",
+        "/workspaces/ros2_concrete_block_ws/src/concrete_block_rviz_plugins/include/**",
+        "/workspaces/ros2_concrete_block_ws/src/concrete_block_world_model/include/**",
+        "/workspaces/ros2_concrete_block_ws/src/ros2_yolos_cpp/include/**",
+        "/usr/include/**"
+      ],
+      "name": "ROS",
+      "intelliSenseMode": "gcc-x64",
+      "compilerPath": "/usr/bin/gcc",
+      "cStandard": "gnu11",
+      "cppStandard": "c++14"
+    }
+  ],
+  "version": 4
+}

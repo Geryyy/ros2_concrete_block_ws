@@ -1,3 +1,23 @@
 {
-  "git.repositoryScanMaxDepth": 3
+  "git.repositoryScanMaxDepth": 3,
+  "python.autoComplete.extraPaths": [
+    "/workspaces/ros2_concrete_block_ws/build/sam2_segmentation",
+    "/workspaces/ros2_concrete_block_ws/install/sam2_segmentation/lib/python3.10/site-packages",
+    "/workspaces/ros2_concrete_block_ws/install/ros2_yolos_cpp/local/lib/python3.10/dist-packages",
+    "/workspaces/ros2_concrete_block_ws/install/concrete_block_motion_planning/local/lib/python3.10/dist-packages",
+    "/workspaces/ros2_concrete_block_ws/install/concrete_block_world_model_interfaces/local/lib/python3.10/dist-packages",
+    "/workspaces/ros2_concrete_block_ws/install/concrete_block_perception_interfaces/local/lib/python3.10/dist-packages",
+    "/opt/ros/humble/lib/python3.10/site-packages",
+    "/opt/ros/humble/local/lib/python3.10/dist-packages"
+  ],
+  "python.analysis.extraPaths": [
+    "/workspaces/ros2_concrete_block_ws/build/sam2_segmentation",
+    "/workspaces/ros2_concrete_block_ws/install/sam2_segmentation/lib/python3.10/site-packages",
+    "/workspaces/ros2_concrete_block_ws/install/ros2_yolos_cpp/local/lib/python3.10/dist-packages",
+    "/workspaces/ros2_concrete_block_ws/install/concrete_block_motion_planning/local/lib/python3.10/dist-packages",
+    "/workspaces/ros2_concrete_block_ws/install/concrete_block_world_model_interfaces/local/lib/python3.10/dist-packages",
+    "/workspaces/ros2_concrete_block_ws/install/concrete_block_perception_interfaces/local/lib/python3.10/dist-packages",
+    "/opt/ros/humble/lib/python3.10/site-packages",
+    "/opt/ros/humble/local/lib/python3.10/dist-packages"
+  ]
 }

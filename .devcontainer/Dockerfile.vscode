@@ -59,7 +59,8 @@ RUN set -exo pipefail && \
     ros-humble-vision-msgs \
     ros-humble-foxglove-bridge \
     ros-humble-cloudini-ros \
-    ros-humble-rmw-cyclonedds-cpp && \
+    ros-humble-rmw-cyclonedds-cpp \
+    ros-humble-rosbag2-storage-mcap && \
   rosdep init || true && \
   rosdep update --rosdistro="${ROS_DISTRO}" && \
   apt-get clean -y && \
