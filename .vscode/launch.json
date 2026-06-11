@@ -16,6 +16,13 @@
       "cwd": "${workspaceFolder}"
     },
     {
+      "name": "Perception Pipeline Continuous",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "source /opt/ros/${ROS_DISTRO}/setup.bash && source install/setup.bash && exec ros2 launch concrete_block_perception perception.launch.py use_sim_time:=true use_gpu:=true perception_mode:=CONTINUOUS",
+      "cwd": "${workspaceFolder}"
+    },
+    {
       "name": "Perception Pipeline + SAM2 Inputs",
       "type": "node-terminal",
       "request": "launch",
@@ -41,6 +48,10 @@
     {
       "name": "Bag Visualization + Perception",
       "configurations": ["Bag Visualization", "Perception Pipeline"]
+    },
+    {
+      "name": "Bag Visualization + Continuous Perception",
+      "configurations": ["Bag Visualization", "Perception Pipeline Continuous"]
     },
     {
       "name": "Bag Visualization + Perception + SAM2",
