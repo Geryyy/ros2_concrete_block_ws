@@ -37,8 +37,9 @@ sudo apt-get update
 sudo apt-get install -y --no-install-recommends \
   ros-humble-nav2-behavior-tree \
   ros-humble-nav2-lifecycle-manager
-# check out all repos listed in the meta-package's .repos file
-vcs import src < src/concrete_block_stack/concrete_block_stack.repos
+# check out all repos listed in the workspace manifest
+mkdir -p src
+vcs import src < ros.repos
 # initialise git submodules in every checked-out package; fall back to --remote
 # if the pinned commit no longer exists on the remote (e.g. after a force-push)
 for dir in src/*/; do

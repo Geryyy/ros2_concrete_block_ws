@@ -10,6 +10,20 @@ In order to run the Docker container in this repository, perform the following m
 
 __warning: the apt keys in the following description might have changed__
 
+## Workspace Checkout
+
+Open the top-level `ros2_concrete_block_ws` repository in the devcontainer. The
+post-create hook imports package repositories from the top-level `ros.repos`
+file:
+
+```sh
+vcs import src < ros.repos
+```
+
+No manual copy of a `.repos` file into `src/` is required. The package-local
+manifest in `src/concrete_block_stack/` is kept for reference, but the
+devcontainer bootstrap uses the top-level manifest.
+
 ## Network Stack
 To be able to run the cameras with no dropped frames, but also to gain reasonable ros messaging performance, increase the network stack size by adding a file:
 
