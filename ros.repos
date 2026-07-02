@@ -3,22 +3,22 @@ repositories:
     type: git
     url: https://github.com/Geryyy/concrete_block_stack.git
     version: master
-  concrete_block_assembly_interfaces:
-    type: git
-    url: https://github.com/Geryyy/concrete_block_assembly_interfaces.git
-    version: main
-  concrete_block_assembly_planning:
-    type: git
-    url: https://github.com/Geryyy/concrete_block_assembly_planning.git
-    version: main
-  concrete_block_behavior_tree:
-    type: git
-    url: https://github.com/Geryyy/concrete_block_behavior_tree.git
-    version: feat/pzs
-  concrete_block_motion_planning:
-    type: git
-    url: https://github.com/Geryyy/concrete_block_motion_planning.git
-    version: main
+  # concrete_block_assembly_interfaces:
+  #   type: git
+  #   url: https://github.com/Geryyy/concrete_block_assembly_interfaces.git
+  #   version: main
+  # concrete_block_assembly_planning:
+  #   type: git
+  #   url: https://github.com/Geryyy/concrete_block_assembly_planning.git
+  #   version: main
+  # concrete_block_behavior_tree:
+  #   type: git
+  #   url: https://github.com/Geryyy/concrete_block_behavior_tree.git
+  #   version: feat/pzs
+  # concrete_block_motion_planning:
+  #   type: git
+  #   url: https://github.com/Geryyy/concrete_block_motion_planning.git
+  #   version: main
   concrete_block_perception:
     type: git
     url: https://github.com/Geryyy/concrete_block_perception_ros.git
@@ -27,14 +27,14 @@ repositories:
     type: git
     url: https://github.com/Geryyy/concrete_block_perception_interfaces.git
     version: main
-  concrete_block_rviz_plugins:
-    type: git
-    url: https://github.com/Geryyy/concrete_block_rviz_plugins.git
-    version: main
-  concrete_block_viz_common:
-    type: git
-    url: https://github.com/Geryyy/concrete_block_viz_common.git
-    version: main
+  # concrete_block_rviz_plugins:
+  #   type: git
+  #   url: https://github.com/Geryyy/concrete_block_rviz_plugins.git
+  #   version: main
+  # concrete_block_viz_common:
+  #   type: git
+  #   url: https://github.com/Geryyy/concrete_block_viz_common.git
+  #   version: main
   concrete_block_world_model:
     type: git
     url: https://github.com/Geryyy/concrete_block_world_model.git
