@@ -1,9 +1,6 @@
 #!/bin/bash
 set -v # verbose, but don't expand vars
 echo 'export PATH="/usr/lib/ccache:$PATH"' | tee -a "/home/${USERNAME}/.bashrc"
-echo 'export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp' >> "/home/${USERNAME}/.bashrc"
-echo 'export CYCLONEDDS_URI=file:///workspaces/ros2_concrete_block_ws/.devcontainer/cyclonedds.xml' >> "/home/${USERNAME}/.bashrc"
-echo 'export ROS_DOMAIN_ID=42' >> "/home/${USERNAME}/.bashrc"
 echo 'export CCACHE_DIR=/workspaces/ros2_concrete_block_ws/.cache/ccache' >> "/home/${USERNAME}/.bashrc"
 echo "source /usr/share/gazebo/setup.sh" >>"/home/${USERNAME}/.bashrc"
 echo "source /opt/ros/humble/setup.bash" >>"/home/${USERNAME}/.bashrc"
