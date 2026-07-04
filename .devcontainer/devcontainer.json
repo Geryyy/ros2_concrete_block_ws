@@ -99,16 +99,13 @@
     "-v",
     "/tmp/.X11-unix:/tmp/.X11-unix",
     "--device=/dev:/dev",
-    // "-v",
-    // "/opt/ait/install/config:/opt/ait/install/config:ro",
     "-v",
-    "/home/geraldebmer/Documents/2025-12-17:/home/vscode/Documents"
+    "/opt/ait/install/config:/opt/ait/install/config:ro",
   ],
   "remoteEnv": {
     "FASTRTPS_DEFAULT_PROFILES_FILE": "${localEnv:FASTRTPS_DEFAULT_PROFILES_FILE}",
-    "RMW_IMPLEMENTATION": "rmw_cyclonedds_cpp",
-    "CYCLONEDDS_URI": "file:///workspaces/ros2_concrete_block_ws/.devcontainer/cyclonedds.xml",
-    "ROS_DOMAIN_ID": "42"
+    "CYCLONEDDS_URI": "${localEnv:CYCLONEDDS_URI}",
+    "RMW_IMPLEMENTATION": "${localEnv:RMW_IMPLEMENTATION}"
   },
   // Use 'initializeCommand' to run commands before the container is created.
   // https://github.com/microsoft/vscode-remote-release/issues/7104#issuecomment-1947893195
