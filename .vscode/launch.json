@@ -12,7 +12,7 @@
       "name": "Perception Pipeline",
       "type": "node-terminal",
       "request": "launch",
-      "command": "source /opt/ros/${ROS_DISTRO}/setup.bash && source install/setup.bash && exec ros2 launch concrete_block_perception perception.launch.py use_sim_time:=true use_gpu:=false",
+      "command": "source /opt/ros/${ROS_DISTRO}/setup.bash && source install/setup.bash && exec ros2 launch concrete_block_perception perception.launch.py use_sim_time:=true use_gpu:=false calib_yaml:=calib_zed2i_to_seyond_old_sensor_head.yaml",
       "cwd": "${workspaceFolder}"
     },
     {
