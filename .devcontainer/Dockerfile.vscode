@@ -113,9 +113,21 @@ RUN set -exo pipefail && \
 # custom CUDA kernel (only used for some video post-processing) so we do not need
 # the full CUDA toolkit/nvcc in the image.
 ENV SAM2_CHECKPOINT_DIR=/opt/sam2/checkpoints
+# PyTorch's pip index now links to download-r2.pytorch.org (Cloudflare R2)
+# whose TLS rejects OpenSSL 3.0.2 in Ubuntu 22.04. Curl via CloudFront works.
+# Original pip install (restore when R2 TLS / base image OpenSSL is fixed):
+#   pip3 install --no-cache-dir --index-url https://download.pytorch.org/whl/cu128 \
+#     torch torchvision && \
+ARG TORCH_WHL=torch-2.11.0%2Bcu128-cp310-cp310-manylinux_2_28_x86_64.whl
+ARG TORCHVISION_WHL=torchvision-0.26.0%2Bcu128-cp310-cp310-manylinux_2_28_x86_64.whl
 RUN set -exo pipefail && \
-  pip3 install --no-cache-dir --index-url https://download.pytorch.org/whl/cu128 \
-    torch torchvision && \
+  mkdir -p /tmp/pytorch_wheels && \
+  curl -fSL -o "/tmp/pytorch_wheels/${TORCH_WHL}" \
+    "https://download.pytorch.org/whl/cu128/${TORCH_WHL}" && \
+  curl -fSL -o "/tmp/pytorch_wheels/${TORCHVISION_WHL}" \
+    "https://download.pytorch.org/whl/cu128/${TORCHVISION_WHL}" && \
+  pip3 install --no-cache-dir "/tmp/pytorch_wheels/${TORCH_WHL}" "/tmp/pytorch_wheels/${TORCHVISION_WHL}" && \
+  rm -rf /tmp/pytorch_wheels && \
   SAM2_BUILD_CUDA=0 pip3 install --no-cache-dir \
     "git+https://github.com/facebookresearch/sam2.git" && \
   mkdir -p "${SAM2_CHECKPOINT_DIR}" && \

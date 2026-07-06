@@ -74,10 +74,10 @@
   //"runArgs": [ "--cap-add=SYS_PTRACE", "--security-opt", "seccomp=unconfined", "--runtime", "nvidia", "--privileged", "--gpus", "all", "-e", "DISPLAY", "-e", "QT_X11_NO_MITSHM=1", "--net", "host", "-v", "/home/user/.Xauthority:/root/.Xauthority:rw", "-v", "/tmp/.X11-unix:/tmp/.X11-unix" ],
   "runArgs": [
     // nvidia begin
-    "--runtime",
-    "nvidia",
-    "--gpus",
-    "all",
+    // "--runtime",
+    // "nvidia",
+    // "--gpus",
+    // "all",
     // nvidia end
     "--cap-add=SYS_PTRACE",
     "--security-opt",
@@ -102,7 +102,7 @@
     // "-v",
     // "/opt/ait/install/config:/opt/ait/install/config:ro",
     "-v",
-    "/home/geraldebmer/Documents/2025-12-17:/home/vscode/Documents"
+    "/home/gebmer/Documents/2025-12-17:/home/vscode/Documents"
   ],
   "remoteEnv": {
     "FASTRTPS_DEFAULT_PROFILES_FILE": "${localEnv:FASTRTPS_DEFAULT_PROFILES_FILE}",
