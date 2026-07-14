@@ -68,38 +68,38 @@ RUN set -exo pipefail && \
 
 WORKDIR /opt
 
-# Install CMA-ES solver
-RUN set -exo pipefail && \
-  git clone --depth 1 https://github.com/CMA-ES/libcmaes.git /opt/libcmaes && \
-  mkdir -p /opt/libcmaes/build && \
-  cd /opt/libcmaes/build && \
-  cmake .. \
-    -DCMAKE_BUILD_TYPE=Release \
-    -DCMAKE_INSTALL_PREFIX="${CMAKE_INSTALL_PREFIX}" \
-    -DLIBCMAES_BUILD_TESTS=OFF && \
-  make -j"${NUM_THREADS}" && \
-  make install && \
-  ldconfig && \
-  rm -rf /opt/libcmaes
+# # Install CMA-ES solver
+# RUN set -exo pipefail && \
+#   git clone --depth 1 https://github.com/CMA-ES/libcmaes.git /opt/libcmaes && \
+#   mkdir -p /opt/libcmaes/build && \
+#   cd /opt/libcmaes/build && \
+#   cmake .. \
+#     -DCMAKE_BUILD_TYPE=Release \
+#     -DCMAKE_INSTALL_PREFIX="${CMAKE_INSTALL_PREFIX}" \
+#     -DLIBCMAES_BUILD_TESTS=OFF && \
+#   make -j"${NUM_THREADS}" && \
+#   make install && \
+#   ldconfig && \
+#   rm -rf /opt/libcmaes
 
-# Install CasADi
-# Pin this if master breaks, e.g. --branch 3.6.7
-RUN set -exo pipefail && \
-  git clone https://github.com/casadi/casadi.git /opt/casadi_src && \
-  mkdir -p /opt/casadi_src/build && \
-  cd /opt/casadi_src/build && \
-  cmake .. \
-    -DCMAKE_BUILD_TYPE=Release \
-    -DCMAKE_INSTALL_PREFIX="${CMAKE_INSTALL_PREFIX}" \
-    -DWITH_PYTHON=ON \
-    -DPYTHON_EXECUTABLE="$(which python3)" \
-    -DWITH_IPOPT=ON \
-    -DWITH_CLANG=ON \
-    -DCLANG_LLVM_LIB_DIR="$(llvm-config --libdir)" && \
-  make -j"${NUM_THREADS}" && \
-  make install && \
-  ldconfig && \
-  rm -rf /opt/casadi_src
+# # Install CasADi
+# # Pin this if master breaks, e.g. --branch 3.6.7
+# RUN set -exo pipefail && \
+#   git clone https://github.com/casadi/casadi.git /opt/casadi_src && \
+#   mkdir -p /opt/casadi_src/build && \
+#   cd /opt/casadi_src/build && \
+#   cmake .. \
+#     -DCMAKE_BUILD_TYPE=Release \
+#     -DCMAKE_INSTALL_PREFIX="${CMAKE_INSTALL_PREFIX}" \
+#     -DWITH_PYTHON=ON \
+#     -DPYTHON_EXECUTABLE="$(which python3)" \
+#     -DWITH_IPOPT=ON \
+#     -DWITH_CLANG=ON \
+#     -DCLANG_LLVM_LIB_DIR="$(llvm-config --libdir)" && \
+#   make -j"${NUM_THREADS}" && \
+#   make install && \
+#   ldconfig && \
+#   rm -rf /opt/casadi_src
 
 # Python geometry/runtime dependencies used by the concrete block stack
 RUN set -exo pipefail && \
@@ -142,40 +142,40 @@ RUN set -exo pipefail && \
   ldconfig && \
   rm -rf /opt/open3d_src
 
-# Install eigenpy from source with CasADi support
-RUN set -exo pipefail && \
-  git clone --branch v3.12.0 --depth 1 https://github.com/stack-of-tasks/eigenpy.git /opt/eigenpy_src && \
-  mkdir -p /opt/eigenpy_src/build && \
-  cd /opt/eigenpy_src/build && \
-  cmake .. \
-    -DCMAKE_BUILD_TYPE=Release \
-    -DCMAKE_INSTALL_PREFIX="${CMAKE_INSTALL_PREFIX}" \
-    -DPYTHON_EXECUTABLE="$(which python3)" \
-    -DBUILD_WITH_CASADI_SUPPORT=ON && \
-  make -j"${NUM_THREADS}" && \
-  make install && \
-  ldconfig && \
-  rm -rf /opt/eigenpy_src
+# # Install eigenpy from source with CasADi support
+# RUN set -exo pipefail && \
+#   git clone --branch v3.12.0 --depth 1 https://github.com/stack-of-tasks/eigenpy.git /opt/eigenpy_src && \
+#   mkdir -p /opt/eigenpy_src/build && \
+#   cd /opt/eigenpy_src/build && \
+#   cmake .. \
+#     -DCMAKE_BUILD_TYPE=Release \
+#     -DCMAKE_INSTALL_PREFIX="${CMAKE_INSTALL_PREFIX}" \
+#     -DPYTHON_EXECUTABLE="$(which python3)" \
+#     -DBUILD_WITH_CASADI_SUPPORT=ON && \
+#   make -j"${NUM_THREADS}" && \
+#   make install && \
+#   ldconfig && \
+#   rm -rf /opt/eigenpy_src
 
-# Install acados from source
-RUN set -exo pipefail && \
-  git clone --recurse-submodules https://github.com/Geryyy/acados.git /opt/acados && \
-  cd /opt/acados && \
-  mkdir -p build && \
-  cd build && \
-  cmake .. \
-    -DCMAKE_BUILD_TYPE=Release \
-    -DCMAKE_INSTALL_PREFIX="${CMAKE_INSTALL_PREFIX}" \
-    -DACADOS_WITH_QPOASES=ON \
-    -DACADOS_WITH_OSQP=ON && \
-  make -j"${NUM_THREADS}" && \
-  make install && \
-  ldconfig && \
-  cd /opt/acados && \
-  bash .github/linux/install_tera.sh && \
-  pip3 install --no-cache-dir \
-    /opt/acados/interfaces/acados_template \
-    pytest
+# # Install acados from source
+# RUN set -exo pipefail && \
+#   git clone --recurse-submodules https://github.com/Geryyy/acados.git /opt/acados && \
+#   cd /opt/acados && \
+#   mkdir -p build && \
+#   cd build && \
+#   cmake .. \
+#     -DCMAKE_BUILD_TYPE=Release \
+#     -DCMAKE_INSTALL_PREFIX="${CMAKE_INSTALL_PREFIX}" \
+#     -DACADOS_WITH_QPOASES=ON \
+#     -DACADOS_WITH_OSQP=ON && \
+#   make -j"${NUM_THREADS}" && \
+#   make install && \
+#   ldconfig && \
+#   cd /opt/acados && \
+#   bash .github/linux/install_tera.sh && \
+#   pip3 install --no-cache-dir \
+#     /opt/acados/interfaces/acados_template \
+#     pytest
 
 # Switch back to dialog for any ad-hoc apt use
 ENV DEBIAN_FRONTEND=dialog

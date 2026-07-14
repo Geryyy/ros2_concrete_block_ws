@@ -3,7 +3,8 @@
   <Domain id="any">
     <General>
       <Interfaces>
-        <NetworkInterface name="enp6s0"/>
+        <!-- <NetworkInterface name="enp6s0"/> -->
+         <NetworkInterface address="192.168.1.5"/>
       </Interfaces>
       <AllowMulticast>false</AllowMulticast>
     </General>
@@ -12,7 +13,7 @@
       <ParticipantIndex>auto</ParticipantIndex>
       <MaxAutoParticipantIndex>50</MaxAutoParticipantIndex>
       <Peers>
-        <Peer address="192.168.1.10"/>
+        <Peer address="192.168.1.111"/>
         <Peer address="192.168.1.5"/>
       </Peers>
     </Discovery>
